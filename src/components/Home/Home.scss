@@ -4,6 +4,16 @@ html {
   background-color: rgb(25, 40, 55);
 }
 
+.txt {
+  color: white;
+
+  &__color {
+    &--black {
+      color: black;
+    }
+  }
+}
+
 .code-me {
   padding: 10%;
   color: orange;
