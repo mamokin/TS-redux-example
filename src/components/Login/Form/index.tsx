@@ -31,6 +31,10 @@ const LoginForm = withFormik<LoginFormProps, FormValues>({
       errors.name = 'Invalid name';
     }
 
+    if(!values.password){
+      errors.password = 'Required';
+    }
+
     return errors;
   },
 

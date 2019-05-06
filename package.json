@@ -7,6 +7,7 @@
   "scripts": {
     "test": "jest --watch-all",
     "start": "node scripts/start.js",
+    "stylelint": "stylelint 'src/**/*.scss'",
     "sonar": "node scripts/sonar.js"
   },
   "author": "",
@@ -78,7 +79,6 @@
     "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.3",
     "@types/mocha": "^5.2.6",
     "@types/react-bootstrap": "^0.32.17",
     "@types/redux-form": "^8.1.1",
@@ -90,12 +90,14 @@
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.8",
     "react-dom": "^16.8.6",
+    "react-hot-loader": "^4.8.4",
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
     "redux": "^4.0.1",
     "redux-form": "^8.2.0",
     "redux-immutable": "^4.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "semantic-ui-react": "^0.86.0"
   },
   "config": {
     "commitizen": {

@@ -1,23 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {History} from 'history';
+import Immutable from 'immutable';
+import {Provider} from 'react-redux';
+import {hot} from 'react-hot-loader/root';
 import {ConnectedRouter} from 'connected-react-router/immutable';
 import routes from './routes';
+import configureStore, {history} from './store/configureStore';
 
-interface AppProps {
-  history: History;
-}
+const initialState = Immutable.Map();
+// Initialize store
+const store = configureStore(initialState);
 
-const App = ({history}: AppProps): JSX.Element => {
+const App = () => {
   return (
-    <ConnectedRouter history={ history }>
-      {routes}
-    </ConnectedRouter>
+    <Provider store={ store }>
+      <ConnectedRouter history={ history }>
+        {routes}
+      </ConnectedRouter>
+    </Provider>
   );
 };
 
-App.propTypes = {
-  history: PropTypes.object
-};
-
-export default App;
+export default hot(App);
