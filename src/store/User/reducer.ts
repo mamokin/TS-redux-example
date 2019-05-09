@@ -1,61 +1,69 @@
-import {UserConstants, UserActionTypes, UserState, User} from './types';
+import {UserActionTypes, User, Users, UsersState, UserActionType} from './types';
+import {List} from 'immutable';
 
-const initialState: UserState = {
-  id: '',
-  username: '',
-  firstName: '',
-  lastName: '',
-  password: '',
-  token: '',
+const initialState = new UsersState({
+  accounts:
+    new Users({
+      users: List([
+        new User({
+          id: -1,
+          username: '',
+          firstName: '',
+          lastName: '',
+          password: '',
+          token: '',
+          deleting: false
+        })
+      ])
+    }),
+  loading: false,
   error: ''
-};
+});
 
 export function usersReducer(
   state = initialState,
   action: UserActionTypes
-): UserState {
+// ): Record<string, IntUsers> {
+// ): Record<string, IntUsersState> {
+// ): Record<string, IntUsersState> {
+): UsersState {
   switch (action.type) {
-    case UserConstants.GETALL_REQUEST:
-      return {
-        loading: true
-      };
-    case UserConstants.GETALL_SUCCESS:
-      return {
-        users: action.users
-      };
-    case UserConstants.GETALL_FAILURE:
-      return { 
+    case UserActionType.GETALL_REQUEST:
+      return state.merge({
+        loading: action.loading
+      });
+    case UserActionType.GETALL_SUCCESS:
+      return state.merge({
+        accounts: action.users
+      });
+    case UserActionType.GETALL_FAILURE:
+      return state.merge({
         error: action.error
-      };
-    case UserConstants.DELETE_REQUEST:
-      // add 'deleting:true' property to user being deleted
-      return {
-        ...state,
-        users: state.users.map((user: User) => user.id === action.id
-          ? {...user, deleting: true}
-          : user
-        )
-      };
-    case UserConstants.DELETE_SUCCESS:
-      // remove deleted user from state
-      return {
-        users: state.users.filter((user: User) => user.id !== action.id)
-      };
-    case UserConstants.DELETE_FAILURE:
+      });
+    case UserActionType.DELETE_REQUEST:
+    // add 'deleting:true' property to user being deleted
+      let newUsers = state.get('accounts').get('users').map((user) => user.get('id') === action.id
+        ? {...user, deleting: true}
+        : user
+      );
+      return state.setIn(['accounts', 'users'], newUsers);
+    case UserActionType.DELETE_SUCCESS:
+      newUsers = state.get('accounts').get('users').filterNot(
+        (u) => {
+          return u.get('id') === action.id;
+        }
+      );
+      return state.setIn(['accounts', 'users'], newUsers);
+    case UserActionType.DELETE_FAILURE:
       // remove 'deleting:true' property and add 'deleteError:[error]' property to user 
-      return {
-        ...state,
-        users: state.users.map((user: User) => {
-          if (user.id === action.id) {
-            // make copy of user without 'deleting:true' property
-            // const {deleting, ...userCopy} = user;
-            // return copy of user with 'deleteError:[error]' property
-            // return {...userCopy, deleteError: action.error};
-          }
+      let newUser = state.get('accounts').get('users').map((user) => {
+        if (user.get('id') === action.id) {
+          // {user.delete('deleting');}
+          state.deleteIn(['accoutns', 'users', 'deleting']);
+        }
+      });
 
-          return user;
-        })
-      };
+      return state.setIn(['accounts', 'users'], newUser);
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import {UserConstants, LoginFormData, User} from './types';
+import {UserConstants, LoginFormData, User, Users} from './types';
 import AlertActions from '../Alert/actions';
 import {ThunkDispatch} from 'redux-thunk';
 import {AnyAction} from 'redux';
@@ -105,7 +105,7 @@ function getAll() {
     return {type: UserConstants.GETALL_REQUEST};
   }
 
-  function success(users: User[]) {
+  function success(users: Users) {
     return {
       type: UserConstants.GETALL_SUCCESS,
       users: users
